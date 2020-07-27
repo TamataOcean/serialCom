@@ -4,7 +4,7 @@
     "Copyright": "Copyright Open Source - W3Licence",
     "system": {
         "serialport" : {
-            "port" : "/dev/tty.SLAB_USBtoUART",
+            "port" : "/dev/tty.usbmodem5905471",
             "baud" : 9600
         }
     }

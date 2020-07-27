@@ -3,12 +3,12 @@
 int timeInterval = 10000;
 int start_log = 0;
 long lastMsg = 0;
-String name = "ESP32-SERIAL";
+String name = "TEENSY-SERIAL";
 
 void setup() {
   Serial.begin(9600);
   delay(10);
-  Serial.println("INIT_ESP32");
+  Serial.println("INIT_SENSOR_HUB");
 }
 
 void loop() {
@@ -41,7 +41,8 @@ int commandManager(String message) {
   }
   else if (message == "restart") {
     Serial.println( name + " - RESTART in progress ");
-    ESP.restart();
+    _reboot_Teensyduino_();
+    //ESP.restart();
   }
   else if (message == "calibrate") {
     Serial.println( name + " - CALIBRATE in progress ");

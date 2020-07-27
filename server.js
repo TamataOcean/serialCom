@@ -37,13 +37,13 @@ function begin(){
     /* LISTENING on SERIAL */
     let parser
     
-    const port = new SerialPort( serialport, { baudRate: baud })
-    port.on('error', function(err) {
+    const serialP_TEENSY = new SerialPort( serialport, { baudRate: baud })
+    serialP_TEENSY.on('error', function(err) {
         console.log('Error: ', err.message)
     })
     
-    port.on('open', function () {
-        port.write('Init_connection_from_Raspi', function(err) {
+    serialP_TEENSY.on('open', function () {
+        serialP_TEENSY.write('Init_connection_from_Raspi', function(err) {
         if (err) {
         return console.log('Error: ', err.message);
         }
@@ -51,7 +51,7 @@ function begin(){
         });
     })
 
-    parser = port.pipe(new Readline({ delimiter: '\r\n' }))
+    parser = serialP_TEENSY.pipe(new Readline({ delimiter: '\r\n' }))
     console.log("Listening on serial")
     
     const nmea = require('node-nmea')
@@ -101,7 +101,7 @@ function begin(){
     /* ---------------------------------------------------------------- */
     .get('/command', function(req, res) {
         console.log('Command requested : '+ req.query.cmd_id);
-        port.write(req.query.cmd_id , function(err){
+        serialP_TEENSY.write(req.query.cmd_id , function(err){
             if (err) {
                 return console.log('Error : ', err.message);
             }
@@ -116,7 +116,11 @@ function begin(){
         //console.log('Invalid adress sent !! : '+res);
         res.redirect('/');
     });
-
+    
+    
+    /* -----------------------------------------------------------------*/
+    /* STARTING HTTP SERVER
+    /* -----------------------------------------------------------------*/
     app.on('connect',function(req,res) {
         port.write('WebUser_init', function(err) {
             if (err) {
